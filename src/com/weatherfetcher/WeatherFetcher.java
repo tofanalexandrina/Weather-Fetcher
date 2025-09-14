@@ -8,11 +8,16 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Scanner;
 
 public class WeatherFetcher {
     public static void main(String[] args) throws IOException, InterruptedException {
+
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("City: ");
+
         HttpClient client= HttpClient.newHttpClient();
-        String city="Bucharest";
+        String city=scanner.nextLine();
         String apiKey=System.getenv("WEATHER_API_KEY");
         // /current.json - endpoint for current weather in JSON format(from documentation)
         String url="https://api.weatherapi.com/v1/current.json?key="+apiKey+"&q="+city;
@@ -25,7 +30,6 @@ public class WeatherFetcher {
         HttpRequest request=HttpRequest.newBuilder().uri(URI.create(url)).build();
         //the body of the response is read as text(String)
         HttpResponse<String> response=client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
 
         //using Jackson to convert JSON response into Java obj
         ObjectMapper mapper=new ObjectMapper();
